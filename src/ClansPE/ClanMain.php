@@ -24,7 +24,7 @@ class ClanMain extends PluginBase implements Listener {
     public $antispam;
     public $purechat;
     public $clanChatActive = [];
-    public $clanChatActive = [];
+    public $allyChatActive = [];
     public function onEnable() {
         @mkdir($this->getDataFolder());
         if (!file_exists($this->getDataFolder() . "BannedNames.txt")) {
