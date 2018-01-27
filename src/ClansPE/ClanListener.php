@@ -82,8 +82,8 @@ class ClanListener implements Listener {
 			if(($clanDamage->getEntity() instanceof Player) and ($clanDamage->getDamager() instanceof Player)) {
 				$player1 = $clanDamage->getEntity()->getPlayer()->getName();
 				$player2 = $clanDamage->getDamager()->getPlayer()->getName();
-                		$f1 = $this->plugin->getPlayerClan($player1);
-				$f2 = $this->plugin->getPlayerClan($player2);
+                		$c1 = $this->plugin->getPlayerClan($player1);
+				$c2 = $this->plugin->getPlayerClan($player2);
 				if((!$this->plugin->prefs->get("AllowClanPvp") && $this->plugin->sameClan($player1, $player2) == true) or (!$this->plugin->prefs->get("AllowAlliedPvp") && $this->plugin->areAllies($c1,$c2))) {
 					$clanDamage->setCancelled(true);
 				}
@@ -127,13 +127,13 @@ class ClanListener implements Listener {
             if($killer instanceof Player){
                 $p = $killer->getPlayer()->getName();
                 if($this->plugin->isInClan($p)){
-                    $f = $this->plugin->getPlayerClan($p);
+                    $c = $this->plugin->getPlayerClan($p);
                     $e = $this->plugin->prefs->get("PowerGainedPerKillingAnEnemy");
                     if($ent instanceof Player){
                         if($this->plugin->isInClan($ent->getPlayer()->getName())){
-                           $this->plugin->addClanPower($f,$e);
+                           $this->plugin->addClanPower($c,$e);
                         } else {
-                           $this->plugin->addClanPower($f,$e/2);
+                           $this->plugin->addClanPower($c,$e/2);
                         }
                     }
                 }
@@ -142,7 +142,7 @@ class ClanListener implements Listener {
         if($ent instanceof Player){
             $e = $ent->getPlayer()->getName();
             if($this->plugin->isInClan($e)){
-                $f = $this->plugin->getPlayerClan($e);
+                $c = $this->plugin->getPlayerClan($e);
                 $e = $this->plugin->prefs->get("PowerGainedPerKillingAnEnemy");
                 if($ent->getLastDamageCause() instanceof EntityDamageByEntityEvent && $ent->getLastDamageCause()->getDamager() instanceof Player){
                     if($this->plugin->isInClan($ent->getLastDamageCause()->getDamager()->getPlayer()->getName())){      
