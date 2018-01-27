@@ -187,7 +187,7 @@ class ClanMain extends PluginBase implements Listener {
             $rankname = $rank;
         }
         $team = "";
-        $result = $this->db->query("SELECT player FROM master WHERE faction='$clan' AND rank='$rank';");
+        $result = $this->db->query("SELECT player FROM master WHERE clan='$clan' AND rank='$rank';");
         $row = array();
         $i = 0;
         while ($resultArr = $result->fetchArray(SQLITE3_ASSOC)) {
@@ -204,12 +204,12 @@ class ClanMain extends PluginBase implements Listener {
     }
     public function getAllAllies($s, $clan) {
         $team = "";
-        $result = $this->db->query("SELECT faction2 FROM allies WHERE clan1='$clan';");
+        $result = $this->db->query("SELECT clan2 FROM allies WHERE clan1='$clan';");
         $row = array();
         $i = 0;
         while ($resultArr = $result->fetchArray(SQLITE3_ASSOC)) {
-            $row[$i]['faction2'] = $resultArr['faction2'];
-            $team .= TextFormat::ITALIC . TextFormat::GREEN . $row[$i]['faction2'] . TextFormat::RESET . TextFormat::WHITE . "§2,§a " . TextFormat::RESET;
+            $row[$i]['clan2'] = $resultArr['clan2'];
+            $team .= TextFormat::ITALIC . TextFormat::GREEN . $row[$i]['clan2'] . TextFormat::RESET . TextFormat::WHITE . "§2,§a " . TextFormat::RESET;
             $i = $i + 1;
         }
         $s->sendMessage($this->formatMessage("§3_____§2[§5§lAllies of §d*$clan*§r§2]§3_____", true));
@@ -223,7 +223,7 @@ class ClanMain extends PluginBase implements Listener {
         $s->sendMessage($this->formatMessage("§3_____§2[§5§lTop 10 BEST Clans§r§2]§3_____", true));
         while ($resultArr = $result->fetchArray(SQLITE3_ASSOC)) {
             $j = $i + 1;
-            $cf = $resultArr['clan'];
+            $cc = $resultArr['clan'];
             $pc = $this->getClanPower($cf);
             $dc = $this->getNumberOfPlayers($cf);
             $s->sendMessage(TextFormat::ITALIC . TextFormat::GOLD . "§6§l$j -> " . TextFormat::GREEN . "§r§d$cf" . TextFormat::GOLD . " §b| " . TextFormat::RED . "§e$pf STR" . TextFormat::GOLD . " §b| " . TextFormat::LIGHT_PURPLE . "§a$df/50" . TextFormat::RESET);
@@ -231,34 +231,34 @@ class ClanMain extends PluginBase implements Listener {
         }
     }
     public function getPlayerClan($player) {
-        $faction = $this->db->query("SELECT faction FROM master WHERE player='$player';");
-        $factionArray = $faction->fetchArray(SQLITE3_ASSOC);
-        return $factionArray["faction"];
+        $clan= $this->db->query("SELECT clan FROM master WHERE player='$player';");
+        $clanArray = $clan->fetchArray(SQLITE3_ASSOC);
+        return $clanArray["clan"];
     }
     public function getLeader($clan) {
-        $leader = $this->db->query("SELECT player FROM master WHERE faction='$clan' AND rank='Leader';");
+        $leader = $this->db->query("SELECT player FROM master WHERE clan='$clan' AND rank='Leader';");
         $leaderArray = $leader->fetchArray(SQLITE3_ASSOC);
         return $leaderArray['player'];
     }
     public function clanExists($clan) {
-        $result = $this->db->query("SELECT player FROM master WHERE faction='$clan';");
+        $result = $this->db->query("SELECT player FROM master WHERE clan='$clan';");
         $array = $result->fetchArray(SQLITE3_ASSOC);
         return empty($array) == false;
     }
     public function sameClan($player1, $player2) {
-        $clan = $this->db->query("SELECT faction FROM master WHERE player='$player1';");
+        $clan = $this->db->query("SELECT clan FROM master WHERE player='$player1';");
         $player1Clan = $clan->fetchArray(SQLITE3_ASSOC);
-        $clan = $this->db->query("SELECT faction FROM master WHERE player='$player2';");
+        $clan = $this->db->query("SELECT clan FROM master WHERE player='$player2';");
         $player2Clan = $clan->fetchArray(SQLITE3_ASSOC);
         return $player1Clan["clan"] == $player2Clan["clan"];
     }
     public function getNumberOfPlayers($clan) {
-        $query = $this->db->query("SELECT COUNT(player) as count FROM master WHERE faction='$clan';");
+        $query = $this->db->query("SELECT COUNT(player) as count FROM master WHERE clan='$clan';");
         $number = $query->fetchArray();
         return $number['count'];
     }
     public function isClanFull($clan) {
-        return $this->getNumberOfPlayers($faction) >= $this->prefs->get("MaxPlayersPerClan");
+        return $this->getNumberOfPlayers($clan) >= $this->prefs->get("MaxPlayersPerClan");
     }
     public function isNameBanned($name) {
         $bannedNames = file_get_contents($this->getDataFolder() . "BannedNames.txt");
