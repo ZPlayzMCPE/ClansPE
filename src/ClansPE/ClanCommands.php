@@ -431,48 +431,48 @@ class ClanCommands {
                         $fac = $this->plugin->factionFromPoint($x, $z, $sender->getPlayer()->getLevel()->getName());
                         $power = $this->plugin->getFactionPower($fac);
                         $sender->sendMessage($this->plugin->formatMessage("§aThis plot is claimed by §2$fac §awith §2$power §aSTR"));
-                    }
+                    }*/
                     if (strtolower($args[0]) == 'top') {
-                        $this->plugin->sendListOfTop10FactionsTo($sender);
+                        $this->plugin->sendListOfTop10ClansTo($sender);
                     }
                     if (strtolower($args[0]) == 'forcedelete') {
                         if (!isset($args[1])) {
-                            $sender->sendMessage($this->plugin->formatMessage("§bPlease use: §3/f forcedelete <faction>"));
+                            $sender->sendMessage($this->plugin->formatMessage("§bPlease use: §3/clans forcedelete <faction>"));
                             return true;
                         }
-                        if (!$this->plugin->factionExists($args[1])) {
-                            $sender->sendMessage($this->plugin->formatMessage("§cThe requested faction doesn't exist."));
+                        if (!$this->plugin->clanExists($args[1])) {
+                            $sender->sendMessage($this->plugin->formatMessage("§cThe requested clan doesn't exist."));
                             return true;
                         }
                         if (!($sender->isOp())) {
                             $sender->sendMessage($this->plugin->formatMessage("§cYou must be OP to do this."));
                             return true;
                         }
-                        $this->plugin->db->query("DELETE FROM master WHERE faction='$args[1]';");
-                        $this->plugin->db->query("DELETE FROM plots WHERE faction='$args[1]';");
-                        $this->plugin->db->query("DELETE FROM allies WHERE faction1='$args[1]';");
-                        $this->plugin->db->query("DELETE FROM allies WHERE faction2='$args[1]';");
-                        $this->plugin->db->query("DELETE FROM strength WHERE faction='$args[1]';");
-                        $this->plugin->db->query("DELETE FROM motd WHERE faction='$args[1]';");
-                        $this->plugin->db->query("DELETE FROM home WHERE faction='$args[1]';");
-                        $sender->sendMessage($this->plugin->formatMessage("§aUnwanted faction was successfully deleted and their faction plot was unclaimed! §bUsing /f forcedelete is not allowed. If you do use this command, please tell Zeao right away. It is not acceptable.", true));
+                        $this->plugin->db->query("DELETE FROM master WHERE clan='$args[1]';");
+                        $this->plugin->db->query("DELETE FROM plots WHERE clan='$args[1]';");
+                        $this->plugin->db->query("DELETE FROM allies WHERE clan1='$args[1]';");
+                        $this->plugin->db->query("DELETE FROM allies WHERE clan2='$args[1]';");
+                        $this->plugin->db->query("DELETE FROM strength WHERE clan='$args[1]';");
+                        $this->plugin->db->query("DELETE FROM motd WHERE clan='$args[1]';");
+                        $this->plugin->db->query("DELETE FROM home WHERE clan='$args[1]';");
+                        $sender->sendMessage($this->plugin->formatMessage("§aUnwanted Clan was successfully deleted! §bUsing /clans forcedelete is not allowed. If you do use this command, please tell Zeao right away. It is not acceptable.", true));
                     }
                     if (strtolower($args[0]) == 'addstrto') {
                         if (!isset($args[1]) or ! isset($args[2])) {
-                            $sender->sendMessage($this->plugin->formatMessage("§bPlease use: §3/f addstrto <faction> <STR>"));
+                            $sender->sendMessage($this->plugin->formatMessage("§bPlease use: §3/clans addstrto <clan> <STR>"));
                             return true;
                         }
-                        if (!$this->plugin->factionExists($args[1])) {
-                            $sender->sendMessage($this->plugin->formatMessage("§cThe requested faction doesn't exist."));
+                        if (!$this->plugin->clanExists($args[1])) {
+                            $sender->sendMessage($this->plugin->formatMessage("§cThe requested clan doesn't exist."));
                             return true;
                         }
                         if (!($sender->isOp())) {
                             $sender->sendMessage($this->plugin->formatMessage("§cYou must be OP to do this."));
                             return true;
                         }
-                        $this->plugin->addFactionPower($args[1], $args[2]);
+                        $this->plugin->addClanPower($args[1], $args[2]);
                         $sender->sendMessage($this->plugin->formatMessage("§aSuccessfully added §2$args[2] §aSTR to §2$args[1]", true));
-                    }Removing*/
+                    }
                     if (strtolower($args[0]) == 'pc') {
                         if (!isset($args[1])) {
                             $sender->sendMessage($this->plugin->formatMessage("§bPlease use: §3/clans pc <player>"));
@@ -1153,7 +1153,7 @@ class ClanCommands {
                         $clan = $args[1];
                         $result = $this->plugin->db->query("SELECT * FROM motd WHERE clan='$clan';");
                         $array = $result->fetchArray(SQLITE3_ASSOC);
-                        $power = $this->plugin->getclanPower($clan);
+                        $power = $this->plugin->getClanPower($clan);
                         $message = $array["message"];
                         $leader = $this->plugin->getLeader($clan);
                         $numPlayers = $this->plugin->getNumberOfPlayers($clan);
@@ -1175,7 +1175,7 @@ class ClanCommands {
                         $power = $this->plugin->getClanPower($clan);
                         $message = $array["message"];
                         $leader = $this->plugin->getLeader($clan);
-                        $numPlayers = $this->plugin->getNumberOfPlayers($faction);
+                        $numPlayers = $this->plugin->getNumberOfPlayers($clan);
                         $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "§3_____§2[§5§lYour Clan Information§r§2]§3_____" . TextFormat::RESET);
                         $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "§bClan Name: " . TextFormat::GREEN . "§5$clan" . TextFormat::RESET);
                         $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "§cLeader Name: " . TextFormat::YELLOW . "§5$leader" . TextFormat::RESET);
