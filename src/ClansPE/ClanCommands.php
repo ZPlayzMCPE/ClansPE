@@ -38,12 +38,12 @@ class ClanCommands {
                                 $clan = $this->plugin->getPlayerClan($playerName);
                                 if ($r == $clan) {
                                     $x = mt_rand(0, $this->plugin->getNumberOfPlayers($clan) - 1);
-                                    $tper = $this->plugin->war_players[$f][$x];
+                                    $tper = $this->plugin->war_players[$c][$x];
                                     $sender->teleport($this->plugin->getServer()->getPlayerByName($tper));
                                     return true;
                                 }
-                                if ($f == $clan) {
-                                    $x = mt_rand(0, $this->plugin->getNumberOfPlayers($fac) - 1);
+                                if ($c == $clan) {
+                                    $x = mt_rand(0, $this->plugin->getNumberOfPlayers($clan) - 1);
                                     $tper = $this->plugin->war_players[$r][$x];
                                     $sender->teleport($this->plugin->getServer()->getPlayer($tper));
                                     return true;
@@ -788,11 +788,11 @@ class ClanCommands {
                             $sender->sendMessage($this->plugin->formatMessage("§bPlease use: §3/clans listleader <clans>"));
                             return true;
                         }
-                        if (!$this->plugin->factionExists($args[1])) {
+                        if (!$this->plugin->clanExists($args[1])) {
                             $sender->sendMessage($this->plugin->formatMessage("§cThe requested clan doesn't exist"));
                             return true;
                         }
-                        $this->plugin->getPlayersInFactionByRank($sender, $args[1], "Leader");
+                        $this->plugin->getPlayersInClanByRank($sender, $args[1], "Leader");
                     }
                     if (strtolower($args[0] == "say")) {
                         if (!$this->plugin->prefs->get("AllowChat")) {
@@ -818,7 +818,7 @@ class ClanCommands {
                         for ($i = 0; $i < $r - 1; $i = $i + 1) {
                             $message = $message . $args[$i + 1] . " ";
                         }
-                        $result = $this->plugin->db->query("SELECT * FROM master WHERE faction='$c';");
+                        $result = $this->plugin->db->query("SELECT * FROM master WHERE clan='$c';");
                         for ($i = 0; $resultArr = $result->fetchArray(SQLITE3_ASSOC); $i = $i + 1) {
                             $row[$i]['player'] = $resultArr['player'];
                             $p = $this->plugin->getServer()->getPlayer($row[$i]['player']);
