@@ -43,7 +43,7 @@ class ClanMain extends PluginBase implements Listener {
         }
         $this->cCommand = new ClanCommands($this);
         $this->prefs = new Config($this->getDataFolder() . "Prefs.yml", CONFIG::YAML, array(
-            "MaxFactionNameLength" => 15,
+            "MaxClanNameLength" => 15,
             "MaxPlayersPerClan" => 30,
             "OnlyLeadersAndOfficersCanInvite" => true,
             "PowerGainedPerPlayerInClan" => 50,
