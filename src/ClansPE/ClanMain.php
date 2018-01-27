@@ -327,14 +327,14 @@ class ClanMain extends PluginBase implements Listener {
     }
     public function cornerIsInPlot($x1, $z1, $x2, $z2, string $level) {
         return($this->pointIsInPlot($x1, $z1, $level) || $this->pointIsInPlot($x1, $z2, $level) || $this->pointIsInPlot($x2, $z1, $level) || $this->pointIsInPlot($x2, $z2, $level));
-    }
+    }*/
     public function formatMessage($string, $confirm = false) {
         if ($confirm) {
             return TextFormat::GREEN . "$string";
         } else {
             return TextFormat::YELLOW . "$string";
         }
-    }*/
+    }
     public function motdWaiting($player) {
         $stmt = $this->db->query("SELECT player FROM motdrcv WHERE player='$player';");
         $array = $stmt->fetchArray(SQLITE3_ASSOC);
